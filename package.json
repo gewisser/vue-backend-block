@@ -1,6 +1,6 @@
 {
   "name": "vue-backend-block",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Use in single-component vue components, blocks for your backend",
   "main": "loader.js",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "keywords": [
     "Vue",
-	"Vue JS",
+    "Vue JS",
     "vuejs",
     "node",
     "nodejs",

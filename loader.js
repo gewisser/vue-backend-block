@@ -9,17 +9,18 @@ const id = 'gavrilow_backend_plugin';
 exports.default = function (source) {
     this.cacheable();
 
-    var callback = this.async();
-    callback(null, '');
+    // Отправляем данные далее следующему загрузчику
+    // ВАЖНО!!! Отправляем пустую строку, иначе все что отправим попадет в конечную сбрку
+    this.async()(null, '');
 
-
+    // Удаляем все переносы строк. Их очень много.
     const _source = source.replace(/^\n/img, '');
 
-    //const options = loaderUtils.getOptions(this);
+    // Путь к файлу в котором содержится Custom Block [blockType=backend]
     const file_path = this.resourcePath;
 
 
-    // Write the path and name of the script into an array ...
+    // this._compiler - глобальный объект, который доступен из плагина
     if (this._compiler[id] === undefined)
         this._compiler[id] = {
             change: true,
@@ -29,11 +30,16 @@ exports.default = function (source) {
 
     var fp_exists = false;
 
+    // Перебираем массив и ищем ранее добавленный код из Custom Blocks vue
+    // Идентификатор блока - полный путь файлу.
     for (let i = this._compiler[id].arr.length - 1; i >= 0; i--) {
         if (this._compiler[id].arr[i].file_path === file_path) {
             fp_exists = true;
 
+
+            // если нашли, то сравним с прошлой версией.
             if (this._compiler[id].arr[i].data !== _source) {
+                // если есть изменения то сохраяем исменения в объект и для палагина выставляем флаг, что были изменения
                 this._compiler[id].arr[i].data = _source;
                 this._compiler[id].change = true;
             }
@@ -43,8 +49,10 @@ exports.default = function (source) {
     }
 
 
-    if (fp_exists) return;
+    if (fp_exists) return; // Если выше был заход в первое условие в цикле, то выходим
 
+    // Добавлеме новый объект в массив, содержащий тест Custom Blocks и полный поуть к файлу
+    // и сигнализируем флагом [ change = true ] для плагина что есть изменения.
     this._compiler[id].change = true;
     this._compiler[id].arr.push({
         file_path: file_path,

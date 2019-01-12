@@ -1,5 +1,4 @@
 const fs = require('fs');
-const path = require('path');
 const util = require('util');
 
 const readFile = util.promisify(fs.readFile);
@@ -72,12 +71,14 @@ class gavrilow_backend_plugin {
 
                 (async ()=>{
                     try {
+                        // Подготваливаем шаблон
                         if (!await this.prepareTemplate())
                             return;
 
-
+                        // Если загрузчик не выставил флаг сигнализирующий о каких-либо изменений
                         if (!compiler.gavrilow_backend_plugin.change) return; // Если ничего для бэка не поменялось
 
+                        // сбрасываем флаг
                         compiler.gavrilow_backend_plugin.change = false;
 
                         if (compiler.gavrilow_backend_plugin.arr.length === 0) {
@@ -89,17 +90,20 @@ class gavrilow_backend_plugin {
 
                         this.addLogMess('Собираем beckend: "'+this.options.backend_output+'"\n...');
 
+                        // записываем все что выше /*{{endpoints}}*/ в шаблоне
                         var backend_js = footer_header_template[0]+"\n";
 
+                        // конкатенация кусков кода из Custom Blocks
                         for (let i = 0; i < compiler.gavrilow_backend_plugin.arr.length; i++) {
                             backend_js +=compiler.gavrilow_backend_plugin.arr[i].data+"\n";
 
                             this.addLogMess('['+compiler.gavrilow_backend_plugin.arr[i].file_path+']');
                         }
 
+                        // присоединяем все что ниже /*{{endpoints}}*/ в шаблоне
                         backend_js += footer_header_template[1];
 
-
+                        // асинхронно записываем результат
                         await writeFile(this.options.backend_output, backend_js);
 
                     } catch (err) {

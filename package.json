@@ -1,0 +1,29 @@
+{
+  "name": "vue-backend-block",
+  "version": "1.0.0",
+  "description": "Use in single-component vue components, blocks for your backend",
+  "main": "loader.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gewisser/vue-backend-block.git"
+  },
+  "keywords": [
+    "Vue",
+	"Vue JS",
+    "vuejs",
+    "node",
+    "nodejs",
+    "webpack",
+    "webpack loader",
+    "webpack plugin"
+  ],
+  "author": "roman@gavrilow.ru",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gewisser/vue-backend-block/issues"
+  },
+  "homepage": "https://github.com/gewisser/vue-backend-block#readme"
+}
